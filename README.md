@@ -1,0 +1,2 @@
+# GitHubActionsTest
+GitHub Actionsのテスト用
