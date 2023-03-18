@@ -1,9 +1,8 @@
 on:
-  issues:
-    types: 
+  pull_request:
+    types:
       - opened
-      - reopened
-      - closed
+      - synchronize
       
 jobs:
   create_text:
