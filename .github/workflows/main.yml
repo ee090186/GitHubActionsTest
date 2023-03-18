@@ -19,7 +19,7 @@ jobs:
 
       - name: git log
         run: |
-          git log --all --pretty=oneline --abbrev-commit --boundary --left-right master...test >> pstest.txt
+          git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test >> pstest.txt
 
       - id: gitGraph
         run: |
