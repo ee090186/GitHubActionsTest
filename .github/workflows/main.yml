@@ -20,7 +20,7 @@ jobs:
       - name: git log
         run: |
           git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test >> pstest.txt
-        shell: pwsh
+        shell: bash
       - id: gitGraph
         run: |
           $contents = (Get-Content .\pstest.txt)
