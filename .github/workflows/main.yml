@@ -22,7 +22,7 @@ jobs:
       - name: git log
         run: |
           # git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test -- >> pstest.txt
-          git log -5
+          git log test
 #      - id: gitGraph
 #        run: |
 #          $contents = (Get-Content .\pstest.txt)
