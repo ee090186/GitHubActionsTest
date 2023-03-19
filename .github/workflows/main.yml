@@ -14,10 +14,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@main
       
-      - name: git setting
-        run: |
-          git config --global user.name ${GITHUB_ACTOR}
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
+#      - name: git setting
+#        run: |
+#          git config --global user.name ${GITHUB_ACTOR}
+#          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
 
       - name: git log
         run: |
