@@ -17,14 +17,11 @@ jobs:
           fetch-depth: 0
 
       - name: Print branch name
-        env:
-          HEAD_BRANCH_NAME: ${{github.head_ref}}
-          BASE_BRANCH_NAME: ${{github.base_ref}}
         run: |
-          echo $HEAD_BRANCH_NAME
-          echo $BASE_BRANCH_NAME     
-          "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $env:GITHUB_ENV
-          "BASE_BRANCH_NAME=$BASE_BRANCH_NAME" >> $env:GITHUB_ENV
+          echo ${{ github.head_ref }}
+          echo ${{ github.base_ref }}
+          "HEAD_BRANCH_NAME=${{ github.head_ref }}" >> $env:GITHUB_ENV
+          "BASE_BRANCH_NAME=${{ github.base_ref }}" >> $env:GITHUB_ENV
 
       - name: git setting
         run: |
