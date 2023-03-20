@@ -33,7 +33,7 @@ jobs:
 
       - name: git log
         run: |
-          git log --pretty=oneline --abbrev-commit --boundary --left-right ${{ env.HEAD_BRANCH_NAME }}...${{ env.BASE_BRANCH_NAME }} >> pstest.txt
+          git log --pretty=oneline --abbrev-commit --boundary --left-right "${{ env.HEAD_BRANCH_NAME }}...${{ env.BASE_BRANCH_NAME }}" >> pstest.txt
         shell: pwsh
 
           
