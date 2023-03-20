@@ -13,18 +13,31 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@main
-      - name: checkout
-        uses: actions/checkout@test
-      
-#      - name: git setting
-#        run: |
-#          git config --global user.name ${GITHUB_ACTOR}
-#          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
+
+      - name: Print branch name
+        env:
+          HEAD_BRANCH_NAME: ${{github.head_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}}
+        run: |
+          echo $HEAD_BRANCH_NAME
+          echo $BASE_BRANCH_NAME     
+          echo "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $GITHUB_ENV
+          echo "BASE_BRANCH_NAME=$BASE_BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: git setting
+        run: |
+          git config --global user.name ${GITHUB_ACTOR}
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
 
       - name: git log
         run: |
-          # git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test -- >> pstest.txt
-          git log test
+          git log --pretty=oneline --abbrev-commit --boundary --left-right $HEAD_BRANCH_NAME...$BASE_BRANCH_NAME >> pstest.txt
+        shell: pwsh
+
+      - name: git log
+        run: |
+          git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test -- >> pstest.txt
+          
 #      - id: gitGraph
 #        run: |
 #          $contents = (Get-Content .\pstest.txt)
