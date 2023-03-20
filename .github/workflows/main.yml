@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@main
+        with:
+          fetch-depth: 0
 
       - name: Print branch name
         env:
@@ -21,8 +23,8 @@ jobs:
         run: |
           echo $HEAD_BRANCH_NAME
           echo $BASE_BRANCH_NAME     
-          echo "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $GITHUB_ENV
-          echo "BASE_BRANCH_NAME=$BASE_BRANCH_NAME" >> $GITHUB_ENV
+          "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $env:GITHUB_ENV
+          "BASE_BRANCH_NAME=$BASE_BRANCH_NAME" >> $env:GITHUB_ENV
 
       - name: git setting
         run: |
@@ -31,7 +33,7 @@ jobs:
 
       - name: git log
         run: |
-          git log --pretty=oneline --abbrev-commit --boundary --left-right $HEAD_BRANCH_NAME...$BASE_BRANCH_NAME >> pstest.txt
+          git log --pretty=oneline --abbrev-commit --boundary --left-right ${{ env.HEAD_BRANCH_NAME }}...${{ env.BASE_BRANCH_NAME }} >> pstest.txt
         shell: pwsh
 
           
