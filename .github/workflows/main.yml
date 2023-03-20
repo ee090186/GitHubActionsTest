@@ -34,9 +34,6 @@ jobs:
           git log --pretty=oneline --abbrev-commit --boundary --left-right $HEAD_BRANCH_NAME...$BASE_BRANCH_NAME >> pstest.txt
         shell: pwsh
 
-      - name: git log
-        run: |
-          git log --all --pretty=oneline --abbrev-commit --boundary --left-right main...test -- >> pstest.txt
           
 #      - id: gitGraph
 #        run: |
