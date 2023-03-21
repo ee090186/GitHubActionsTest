@@ -28,15 +28,15 @@ jobs:
           git config --global user.name ${GITHUB_ACTOR}
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
 
-      - id: git-log
-        run: |
-          $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
-          "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
-        shell: pwsh
+#      - id: git-log
+#        run: |
+#          $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
+#          "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
+#        shell: pwsh
           
       - id: gitGraph
         run: |
-          [string]$contents = ${{ steps.git-log.outputs.GIT_LOG }}
+          $contents = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
           [array]::Reverse($contents)
 
 
