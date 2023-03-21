@@ -28,15 +28,16 @@ jobs:
           git config --global user.name ${GITHUB_ACTOR}
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com" 
 
-      - name: git log
+      - id: git-log
         run: |
-          "git log --pretty=oneline --abbrev-commit --boundary --left-right ${{ env.BASE_BRANCH_NAME }}...${{ env.HEAD_BRANCH_NAME }} >> pstest.txt"
+          $git_log = "git log --pretty=oneline --abbrev-commit --boundary --left-right ${{ env.BASE_BRANCH_NAME }}...${{ env.HEAD_BRANCH_NAME }}"
+          "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
         shell: pwsh
 
           
       - id: gitGraph
         run: |
-          $contents = (Get-Content .\pstest.txt)
+          $contents = ${{ steps.git-log.outputs.GIT_LOG }}
           [array]::Reverse($contents)
 
 
