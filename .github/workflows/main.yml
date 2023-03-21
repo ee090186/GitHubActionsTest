@@ -30,12 +30,11 @@ jobs:
 
       - id: git-log
         run: |
-          #$git_log = 
-          git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
+          $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
           #git log origin/test -5
           #git log origin/main -5
           #git log main -5
-          # "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
+          "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
         shell: pwsh
 
           
