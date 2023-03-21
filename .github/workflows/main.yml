@@ -30,15 +30,13 @@ jobs:
 
       - id: git-log
         run: |
-          #$git_log = 
-          git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
-          #"GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
+          $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
+          "GIT_LOG=$git_log" >> $env:GITHUB_OUTPUT
         shell: pwsh
-
           
       - id: gitGraph
         run: |
-          $contents = ${{ steps.git-log.outputs.GIT_LOG }}
+          $contents = "${{ steps.git-log.outputs.GIT_LOG }}"
           [array]::Reverse($contents)
 
 
