@@ -44,7 +44,7 @@ jobs:
           $merge_mark = ">"
           $division_point = "-"
 
-          $code_block = "``````"
+          #$code_block = '```'
           $crlf = "`r`n"
           $master_branch = "main"
           $merge_branch = "test"
@@ -90,7 +90,7 @@ jobs:
               $gitgraph_text += $commit + '"' + $sha + '"' + $crlf
           }
 
-          $gitgraph_text += $code_block
+          #$gitgraph_text += $code_block
           
           # selects random value for $EOF
           -join (1..15 | ForEach {[char]((48..57)+(65..90)+(97..122) | Get-Random)}) | set EOF
