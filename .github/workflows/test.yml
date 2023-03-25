@@ -29,4 +29,4 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
-          Write-Output ${{ steps.step_one.outputs.text }}
+          Write-Output `${{ steps.step_one.outputs.text }}`
