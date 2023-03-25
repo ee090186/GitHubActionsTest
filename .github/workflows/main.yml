@@ -96,7 +96,7 @@ jobs:
           
           # selects random value for $EOF
           -join (1..15 | ForEach {[char]((48..57)+(65..90)+(97..122) | Get-Random)}) | set EOF
-          "text=<<$EOF" >> $env:GITHUB_OUTPUT
+          "text<<$EOF" >> $env:GITHUB_OUTPUT
           $gitgraph_text >> $env:GITHUB_OUTPUT
           "$EOF" >> $env:GITHUB_OUTPUT
 
