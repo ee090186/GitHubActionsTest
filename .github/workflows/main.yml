@@ -44,7 +44,7 @@ jobs:
           $merge_mark = ">"
           $division_point = "-"
 
-          $code_block = '```'
+          $code_block = '\`\`\`'
           $crlf = "`r`n"
           $master_branch = "main"
           $merge_branch = "test"
@@ -102,13 +102,13 @@ jobs:
 
       - name: logging gitGraph text
         run: |
-          echo "${{ steps.gitGraph.outputs.text }}"
+          echo '${{ steps.gitGraph.outputs.text }}'
 
       - name: Comment on new issue
         uses: actions/github-script@v6
         with:
           script: |
-              const body = "${{ steps.gitGraph.outputs.text }}"
+              const body = `${{ steps.gitGraph.outputs.text }}`
               github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
