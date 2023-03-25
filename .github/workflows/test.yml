@@ -16,7 +16,7 @@ jobs:
           
           $gitgraph_text = "abc" + "`r`n" + "def"
           Write-Output $gitgraph_text
-          "text=<<$EOF" >> $env:GITHUB_OUTPUT
+          "text<<$EOF" >> $env:GITHUB_OUTPUT
           $gitgraph_text >> $env:GITHUB_OUTPUT
           "$EOF" >> $env:GITHUB_OUTPUT
         shell: pwsh
