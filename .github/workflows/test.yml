@@ -14,7 +14,7 @@ jobs:
           #(Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ee090186/GitHubActionsTest/main/README.md").Content >> $env:GITHUB_OUTPUT
           #"$EOF" >> $env:GITHUB_OUTPUT
           
-          $gitgraph_text = '```'
+          $gitgraph_text = '``'
           $gitgraph_text += "mermaid" + "`r`n"
           $gitgraph_text += "gitGraph" + "`r`n"
           $gitgraph_text += "abc" + "`r`n" + "def"
