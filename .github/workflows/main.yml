@@ -39,7 +39,7 @@ jobs:
           
       - id: gitGraph
         run: |
-          $contents = "${{ steps.git-log.outputs.GIT_LOG }}"
+          $contents = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
           [array]::Reverse($contents)
 
 
