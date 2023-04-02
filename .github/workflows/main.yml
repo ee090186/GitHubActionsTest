@@ -30,6 +30,15 @@ jobs:
 
       - id: git-log
         run: |
+          # The following git command will mark the boundary commit with "-", 
+          # the branch to merge in with "<", and the branch to be merged with ">".
+          # Example:
+          # < 4679108 master commit
+          # > fa69d80 test commit2
+          # > f1af42e test commit
+          # - 32021a0 amend
+
+          # Selects random value for $EOF
           $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
           -join (1..15 | ForEach {[char]((48..57)+(65..90)+(97..122) | Get-Random)}) | set EOF
           "GIT_LOG<<$EOF" >> $env:GITHUB_OUTPUT
@@ -40,6 +49,8 @@ jobs:
       - id: gitGraph
         run: |
           $contents = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
+          
+          # Create a gitGraph text with the commit order reversed from the "git log" command.
           [array]::Reverse($contents)
 
 
@@ -72,7 +83,7 @@ jobs:
                   }
               }
               elseif ($mark -eq $merge_mark) {
-
+                  # Run only once on the branch to be merged
                   if (-not $is_merge_branch_created) {
                       $gitgraph_text += $branch + $merge_branch + $crlf
                       $is_merge_branch_created = $true
@@ -95,9 +106,10 @@ jobs:
 
           $gitgraph_text += $code_block
           
+          # For Debug
           Write-Output $gitgraph_text
           
-          # selects random value for $EOF
+          # Selects random value for $EOF
           -join (1..15 | ForEach {[char]((48..57)+(65..90)+(97..122) | Get-Random)}) | set EOF
           "text<<$EOF" >> $env:GITHUB_OUTPUT
           $gitgraph_text >> $env:GITHUB_OUTPUT
