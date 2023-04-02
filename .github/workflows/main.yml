@@ -40,6 +40,9 @@ jobs:
 
           # Selects random value for $EOF
           $git_log = git log --pretty=oneline --abbrev-commit --boundary --left-right origin/${{ env.BASE_BRANCH_NAME }}...origin/${{ env.HEAD_BRANCH_NAME }}
+          # For debug
+          Write-Output $git-log
+          
           -join (1..15 | ForEach {[char]((48..57)+(65..90)+(97..122) | Get-Random)}) | set EOF
           "GIT_LOG<<$EOF" >> $env:GITHUB_OUTPUT
           $git_log >> $env:GITHUB_OUTPUT
@@ -55,8 +58,8 @@ jobs:
 
           $code_block = '\`\`\`'
           $crlf = "`r`n"
-          $master_branch = ${{ env.BASE_BRANCH_NAME }}
-          $merge_branch = ${{ env.HEAD_BRANCH_NAME }}
+          $master_branch = "${{ env.BASE_BRANCH_NAME }}"
+          $merge_branch = "${{ env.HEAD_BRANCH_NAME }}"
           $branch = "branch "
           $checkout = "checkout "
           $commit = "commit id:"
