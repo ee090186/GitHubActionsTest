@@ -55,8 +55,8 @@ jobs:
 
           $code_block = '\`\`\`'
           $crlf = "`r`n"
-          $master_branch = "main"
-          $merge_branch = "test"
+          $master_branch = "${{ env.BASE_BRANCH_NAME }}"
+          $merge_branch = "${{ env.HEAD_BRANCH_NAME }}"
           $branch = "branch "
           $checkout = "checkout "
           $commit = "commit id:"
