@@ -48,15 +48,10 @@ jobs:
           
       - id: gitGraph
         run: |
-          $contents = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
+          $git_log_results = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
           
           # Create a gitGraph text with the commit order reversed from the "git log" command.
-          [array]::Reverse($contents)
-
-
-          $master_mark = "<"
-          $merge_mark = ">"
-          $division_point = "-"
+          [array]::Reverse($git_log_results)
 
           $code_block = '\`\`\`'
           $crlf = "`r`n"
@@ -71,32 +66,25 @@ jobs:
           $is_merge_branch_created = $false
           $cur_branch = $master_branch
 
-          foreach ($line in $contents) {
+          foreach ($line in $git_log_results) {
               $splited_line = $line.Split(" ")
               $mark = $splited_line[0]
               $sha = $splited_line[1]
 
-              if ($mark -eq $master_mark) {
+              if ($mark -eq "<" -or "-") {
                   if ($cur_branch -ne $master_branch) {
                       $cur_branch = $master_branch
                       $gitgraph_text += $checkout + $cur_branch + $crlf
                   }
               }
-              elseif ($mark -eq $merge_mark) {
+              elseif ($mark -eq ">") {
                   # Run only once on the branch to be merged
                   if (-not $is_merge_branch_created) {
                       $gitgraph_text += $branch + $merge_branch + $crlf
                       $is_merge_branch_created = $true
                   }
-
                   if ($cur_branch -ne $merge_branch) {
                       $cur_branch = $merge_branch
-                      $gitgraph_text += $checkout + $cur_branch + $crlf
-                  }
-              }
-              elseif ($mark -eq $division_point) {
-                  if ($cur_branch -ne $master_branch) {
-                      $cur_branch = $master_branch
                       $gitgraph_text += $checkout + $cur_branch + $crlf
                   }
               }
@@ -114,10 +102,6 @@ jobs:
           "text<<$EOF" >> $env:GITHUB_OUTPUT
           $gitgraph_text >> $env:GITHUB_OUTPUT
           "$EOF" >> $env:GITHUB_OUTPUT
-
-      - name: logging gitGraph text
-        run: |
-          echo '${{ steps.gitGraph.outputs.text }}'
 
       - name: Comment on new issue
         uses: actions/github-script@v6
