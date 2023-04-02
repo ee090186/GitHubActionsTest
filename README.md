@@ -1,4 +1,2 @@
-
-
 # GitHubActionsTest
 GitHub Actionsのテスト用
