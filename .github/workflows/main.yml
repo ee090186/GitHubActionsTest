@@ -74,7 +74,7 @@ jobs:
               $mark = $splited_line[0]
               $sha = $splited_line[1]
 
-              if ($mark -eq "<" -or "-") {
+              if ( ($mark -eq "<") -or ($mark -eq "-") ) {
                   if ($cur_branch -ne $master_branch) {
                       $cur_branch = $master_branch
                       $gitgraph_text += $checkout + $cur_branch + $crlf
