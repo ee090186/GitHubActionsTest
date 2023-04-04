@@ -51,51 +51,52 @@ jobs:
           
       - id: gitGraph
         run: |
-          $git_log_results = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
-          
-          # Create a gitGraph text with the commit order reversed from the "git log" command.
-          [array]::Reverse($git_log_results)
+          try
+          {
+              $git_log_results = "${{ steps.git-log.outputs.GIT_LOG }}".Split("`n")
 
-          $code_block = '\`\`\`'
-          $crlf = "`r`n"
-          $master_branch = "${{ env.BASE_BRANCH_NAME }}"
-          $merge_branch = "${{ env.HEAD_BRANCH_NAME }}"
-          $branch = "branch "
-          $checkout = "checkout "
-          $commit = "commit id:"
-          $gitgraph_text = "${code_block}mermaid${crlf}"
-          $gitgraph_text += "gitGraph${crlf}"
-
-          $is_merge_branch_created = $false
-          $cur_branch = $master_branch
-
-          foreach ($line in $git_log_results) {
-              $splited_line = $line.Split(" ")
-              $mark = $splited_line[0]
-              $sha = $splited_line[1]
-
-              if ( ($mark -eq "<") -or ($mark -eq "-") ) {
-                  if ($cur_branch -ne $master_branch) {
-                      $cur_branch = $master_branch
-                      $gitgraph_text += $checkout + $cur_branch + $crlf
+              # Create a gitGraph text with the commit order reversed from the "git log" command.
+              [array]::Reverse($git_log_results)
+              $code_block = '\`\`\`'
+              $crlf = "`r`n"
+              $master_branch = "${{ env.BASE_BRANCH_NAME }}"
+              $merge_branch = "${{ env.HEAD_BRANCH_NAME }}"
+              $branch = "branch "
+              $checkout = "checkout "
+              $commit = "commit id:"
+              $gitgraph_text = "${code_block}mermaid${crlf}"
+              $gitgraph_text += "gitGraph${crlf}"
+              $is_merge_branch_created = $false
+              $cur_branch = $master_branch
+              foreach ($line in $git_log_results) {
+                  $splited_line = $line.Split(" ")
+                  $mark = $splited_line[0]
+                  $sha = $splited_line[1]
+                  if ( ($mark -eq "<") -or ($mark -eq "-") ) {
+                      if ($cur_branch -ne $master_branch) {
+                          $cur_branch = $master_branch
+                          $gitgraph_text += $checkout + $cur_branch + $crlf
+                      }
                   }
+                  elseif ($mark -eq ">") {
+                      # Run only once on the branch to be merged
+                      if (-not $is_merge_branch_created) {
+                          $gitgraph_text += $branch + $merge_branch + $crlf
+                          $is_merge_branch_created = $true
+                      }
+                      if ($cur_branch -ne $merge_branch) {
+                          $cur_branch = $merge_branch
+                          $gitgraph_text += $checkout + $cur_branch + $crlf
+                      }
+                  }
+                  $gitgraph_text += $commit + '"' + $sha + '"' + $crlf
               }
-              elseif ($mark -eq ">") {
-                  # Run only once on the branch to be merged
-                  if (-not $is_merge_branch_created) {
-                      $gitgraph_text += $branch + $merge_branch + $crlf
-                      $is_merge_branch_created = $true
-                  }
-                  if ($cur_branch -ne $merge_branch) {
-                      $cur_branch = $merge_branch
-                      $gitgraph_text += $checkout + $cur_branch + $crlf
-                  }
-              }
-
-              $gitgraph_text += $commit + '"' + $sha + '"' + $crlf
+              $gitgraph_text += $code_block
           }
-
-          $gitgraph_text += $code_block
+          catch
+          {
+            Write-Output $Error
+          }
           
           # For Debug
           Write-Output $gitgraph_text
